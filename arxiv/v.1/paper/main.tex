@@ -1,0 +1,262 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{csquotes}
+\usepackage[numbers,sort&compress]{natbib}
+
+\title{From Behavioral State Vocabularies to Distributed Embodiment:\\
+SOFTSIM and GA144 as an Executable Framework}
+\author{Christopher A. Tucker}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This paper is the implementation-oriented third step in a sequence of
+related studies. A prior historical paper argued that an older line of
+machine-intelligence thought remains architecturally useful when read in
+terms of sensing, state, control, action, and adaptation. A second paper
+showed that Sony's \texttt{ERS-111} \texttt{R-CODE} sample corpus can be
+read through a compact behavioral state vocabulary rather than as a set of
+unrelated scripts. The present paper asks what follows if that vocabulary is
+treated not only as an analytic description, but as a candidate
+implementation grammar. Its main claim is that the GreenArrays toolchain,
+especially \texttt{arrayForth}, boot-descriptor loading, \texttt{SOFTSIM},
+and physical \texttt{GA144} deployment, provides a continuous path from
+behavioral decomposition to executable distributed embodiment. On this
+reading, behavior diagrams are neither loose metaphors nor final programs.
+They are intermediate control descriptions that can be mapped onto
+communicating \texttt{F18A} nodes, initialized reproducibly, exercised
+functionally in simulation, and then carried toward hardware realization.
+The paper positions this workflow as a concrete framework for studying
+fast-reactive and slow-supervisory embodied control without collapsing both
+layers into one monolithic controller.
+\end{abstract}
+
+\onehalfspacing
+
+\section{Introduction}
+
+This paper is written as the third in a sequence. The first paper argued
+that a historically underused architecture of machine intelligence can be
+recovered by reading symbolic logic, circuitry, control, and embodied
+behavior together rather than apart. The second paper moved from historical
+reconstruction to preserved robotic software and argued that Sony's
+\texttt{ERS-111} \texttt{R-CODE} sample set is organized by a compact
+behavioral state vocabulary centered on initialization, sensing, action,
+synchronization, and recovery \citep{tucker2026behavioral}. The present
+paper takes the next step. It asks how such a vocabulary can be made
+executable on a distributed substrate instead of remaining a descriptive
+layer over legacy code.
+
+That question matters because much current robotics work still separates
+high-level cognition from low-level embodied viability too sharply. Systems
+may be rich in perception, planning, or language conditioning while
+remaining comparatively weak in persistent local organization: postural
+maintenance, contact response, local recovery, and bounded reactive loops
+that keep a physical agent workable in the world while larger tasks are
+being pursued. One common way of talking about that split is through
+fast/slow or \emph{System 1} / \emph{System 2} language, where rapid
+background response and slower supervisory interpretation are treated as
+distinct but cooperating cadences \citep{kahneman2011thinking,wang2025hume}.
+
+The aim of this paper is not to claim that GreenArrays hardware solves
+contemporary robotics in general. It is narrower and more practical. The
+claim is that the \texttt{F18A} / \texttt{arrayForth} /
+\texttt{SOFTSIM} / \texttt{GA144} stack offers a usable experimental path
+for implementing distributed embodied control in explicit small processes.
+That makes it a good setting in which to test whether behavioral
+decompositions derived from robot code can be turned into node-local loops,
+inter-node handoffs, and slower supervisory interventions without being
+absorbed into a single centralized controller.
+
+\section{Research Question and Thesis}
+
+The guiding question is how a behavioral state vocabulary should function
+after analysis. Is it only a retrospective interpretive device for reading
+robot scripts, or can it serve as an intermediate implementation layer that
+connects behavior design to executable distributed systems?
+
+The thesis of this paper is that the GreenArrays toolchain supports the
+stronger reading. In this environment, a behavior description can be mapped
+onto concrete communicating \texttt{F18A} nodes, assembled into persistent
+per-node images, initialized declaratively through boot-descriptor
+mechanisms, executed functionally in \texttt{SOFTSIM}, and then carried to
+physical \texttt{GA144} hardware \citep{greenarrays2011db001,greenarrays2011db013}. The
+result is not yet a finished robotic architecture. It is an executable
+framework for studying how fast reactive loops, local state, and slower
+supervisory control might be separated, coordinated, inspected, and
+eventually embodied in hardware.
+
+\section{From Behavioral Vocabulary to Implementation Grammar}
+
+The earlier \texttt{R-CODE} study argued that apparently different Sony
+sample routines reuse a small recurrent vocabulary of control forms:
+startup regularization, sensing, conditional branching, iterative action,
+synchronization, and recovery \citep{tucker2026behavioral}. That finding
+has two possible interpretations. The weaker one is taxonomic: the
+vocabulary merely groups legacy scripts into comparable families. The
+stronger one is constructive: the vocabulary identifies a set of behavior
+blocks that can be re-instantiated on another substrate.
+
+This paper adopts the stronger interpretation. In that reading, a behavior
+diagram is not yet machine code, but it is more than a sketch. It specifies
+roles that an implementation must realize: persistent loops, transition
+conditions, local memory, recovery paths, and coordination points. Such a
+description is therefore well suited to a substrate whose basic unit is not
+a single giant process but a collection of communicating node-local
+programs.
+
+That is where the GreenArrays environment becomes relevant. The \texttt{F18A}
+architecture is already distributed in form. It consists of many small
+communicating nodes with explicit port semantics, node-local memory, and
+fine-grained execution \citep{greenarrays2011db001}. The programming model
+described by \texttt{arrayForth} then reinforces that decomposition by
+treating code as persistent per-node object images rather than as one flat
+binary \citep{greenarrays2011db013}. What the earlier paper recovered at
+the level of behavioral analysis thus meets a substrate that is already
+organized for decomposition.
+
+\section{The GreenArrays Execution Path}
+
+The practical value of the GreenArrays stack lies in the continuity of its
+workflow. The manuals and local notes together support a five-stage path:
+behavioral model, node allocation, per-node assembly, declarative
+initialization, and executable realization.
+
+The first stage is the behavior description itself. Here the relevant object
+is a compact control representation: a loop, a sensing condition, a
+supervisory trigger, a recovery branch, or a state-maintaining routine. The
+second stage assigns these roles to concrete nodes and communication paths.
+This is the point at which a state machine or behavior ladder becomes a
+distributed organization rather than a conceptual diagram.
+
+The third stage is per-node implementation. \texttt{arrayForth} Chapter 4
+describes an incremental environment in which each node has a persistent
+object bin containing RAM image, ROM image, and labels
+\citep{greenarrays2011db013}. That matters because it makes implementation
+structurally congruent with the distributed behavior idea. One does not
+begin from a monolithic application image and then discover decomposition
+afterward. The decomposition is present in the object model from the start.
+
+The fourth stage is declarative initialization. Chapter 6's boot-descriptor
+machinery provides a way to specify how many nodes are touched, how memory
+and registers are initialized, and how a node ensemble is brought into
+execution-ready form \citep{greenarrays2011db013}. This is not just a
+loading convenience. It is part of the argument of the paper. If a behavior
+architecture is to be studied seriously, it must be instantiated
+reproducibly. The boot-descriptor layer supplies that reproducible
+instantiation path.
+
+The fifth stage is executable realization. \texttt{SOFTSIM} provides a
+functional environment in which the resulting node program can be loaded,
+stepped, and inspected, while \texttt{GA144} provides the physical
+distributed substrate on which the same style of program can be manifested.
+The important constraint is that the simulator should be treated as a
+functional witness, not as a timing-faithful proxy for the hardware. It can
+validate organization and value-level behavior, while real-chip testing
+remains necessary for timing, contention, and physical I/O questions.
+
+\section{Fast and Slow Cadence}
+
+One reason this implementation path is worth isolating is that it offers a
+concrete place to study fast and slow control decomposition. Public robotics
+literature now contains multiple explicit versions of this pattern, in which
+a faster reactive layer cooperates with a slower interpretive or
+value-guided layer \citep{wang2025hume}. The GreenArrays stack is relevant
+not because it replicates those systems wholesale, but because it offers a
+different implementation emphasis: distributed low-latency node processes
+instead of one heavy central controller.
+
+In the present framing, fast control corresponds to local reactive loops:
+posture maintenance, contact response, bounded actuator logic, sensing, and
+recovery. Slow control corresponds to supervisory choice, mode transition,
+task redirection, or larger behavioral revision. This is conceptually close
+to familiar behavior-based and layered-control traditions
+\citep{arkin1998behavior,brooks1991intelligence}, but the present paper adds
+an implementation claim. It argues that the split can be explored on a
+distributed asynchronous substrate whose programming and loading machinery
+already respects node locality.
+
+This has methodological value. It lets a researcher ask not only whether a
+behavior architecture is intelligible on paper, but whether its parts can be
+given separate executable homes, separate initialization conditions, and
+separate inspection points. That makes the architecture more testable. One
+can begin with a minimal one-node reactive loop, then expand to a two-node
+handoff, then move toward richer supervisory decomposition while keeping the
+relationship among behavior, implementation, and loading visible.
+
+\section{A Minimal Research Program}
+
+The current local notes suggest a practical research program that starts
+small and stays traceable. The first step is not a large multi-node robotic
+brain. It is a minimal structural mutation of a known-good \texttt{SOFTSIM}
+load pattern. That means preserving a confirmed small example, introducing a
+controlled one-node variant, verifying that it still loads and steps
+correctly, and only then extending the pattern toward a two-node cadence
+experiment.
+
+This sequence is methodologically important because it separates three kinds
+of error that would otherwise be conflated: syntax or assembly error,
+load-and-initialization error, and inter-node coordination error. Once these
+are disentangled, the implementation path becomes suitable for more serious
+behavior experiments. A reactive loop can be isolated, a supervisory trigger
+can be added, and the resulting handoff can be inspected first in
+\texttt{SOFTSIM} and later on hardware.
+
+The broader value proposition is architectural rather than benchmark-driven.
+\texttt{GA144} is interesting here because it offers a plausible low-energy,
+many-node substrate for persistent small embodied loops. The point is not
+that current notes prove superior robot performance or timing efficiency.
+The point is that the substrate fits the decomposition under study:
+background reactive processes that remain active continuously rather than as
+occasional subroutines.
+
+\section{Contribution of the Third Paper}
+
+Within the three-paper sequence, the present paper occupies a distinct role.
+The first paper recovered an architectural lineage for embodied machine
+intelligence. The second showed that a preserved robot-code corpus can be
+read through a stable behavioral state vocabulary. The third paper turns
+that vocabulary toward execution. Its contribution is to identify a concrete
+toolchain in which behavior blocks, node decomposition, initialization, and
+functional execution can be studied together rather than in isolation.
+
+That contribution should be stated carefully. The paper does not yet present
+a completed distributed robot controller, nor does it claim timing
+validation, energy benchmarking, or parity with contemporary foundation-model
+robot systems. Its claim is narrower and still useful: behavior diagrams can
+serve as an intermediate representation for executable distributed
+embodiment, and the GreenArrays stack provides a disciplined environment in
+which that claim can be explored incrementally.
+
+\section{Conclusion}
+
+The main result of this paper is a framework claim. A behavioral state
+vocabulary need not remain a retrospective analytic lens over preserved robot
+code. It can function as an implementation grammar when paired with a
+substrate that already supports node-local programming, explicit
+communication, reproducible initialization, and functional execution.
+
+Within that framing, the GreenArrays environment supplies a continuous path
+from behavior description to distributed realization: node-level
+implementation in \texttt{arrayForth}, declarative ensemble setup through
+boot descriptors, functional execution in \texttt{SOFTSIM}, and eventual
+physical manifestation on \texttt{GA144}. This does not complete the larger
+research program, but it makes the next step concrete. Instead of discussing
+fast and slow embodied control only at the level of architecture, we can now
+study how such a decomposition behaves when given explicit executable form on
+a distributed substrate.
+
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+\end{document}
