@@ -48,14 +48,25 @@ layers into one monolithic controller.
 This paper is written as the third in a sequence. The first paper argued
 that a historically underused architecture of machine intelligence can be
 recovered by reading symbolic logic, circuitry, control, and embodied
-behavior together rather than apart. The second paper moved from historical
-reconstruction to preserved robotic software and argued that Sony's
-\texttt{ERS-111} \texttt{R-CODE} sample set is organized by a compact
-behavioral state vocabulary centered on initialization, sensing, action,
-synchronization, and recovery \citep{tucker2026behavioral}. The present
-paper takes the next step. It asks how such a vocabulary can be made
-executable on a distributed substrate instead of remaining a descriptive
-layer over legacy code.
+behavior together rather than apart \citep{tucker2026berkeley}. The second
+paper moved from historical reconstruction to preserved robotic software
+and argued that Sony's \texttt{ERS-111} \texttt{R-CODE} sample set is
+organized by a compact behavioral state vocabulary centered on
+initialization, sensing, action, synchronization, and recovery
+\citep{tucker2026behavioral}. The present paper takes the next step. It
+asks how such a vocabulary can be made executable on a distributed
+substrate instead of remaining a descriptive layer over legacy code.
+
+The relation among the three papers is therefore architectural rather than
+merely chronological. The first paper supplies the engineering hypothesis:
+embodied machine intelligence can be organized through explicit relations
+among sensing, state or memory, control, action, recovery, and adaptation.
+The second paper supplies the intermediate behavioral representation: a
+reusable vocabulary of states and transitions extracted from a preserved
+robot corpus. The present paper treats that representation as something to
+be instantiated. Its task is to ask whether the vocabulary can be mapped
+onto executable node-local processes, initialized reproducibly, inspected in
+simulation, and carried toward a distributed hardware substrate.
 
 That question matters because much current robotics work still separates
 high-level cognition from low-level embodied viability too sharply. Systems
@@ -94,7 +105,13 @@ physical \texttt{GA144} hardware \citep{greenarrays2011db001,greenarrays2011db01
 result is not yet a finished robotic architecture. It is an executable
 framework for studying how fast reactive loops, local state, and slower
 supervisory control might be separated, coordinated, inspected, and
-eventually embodied in hardware.
+eventually embodied in hardware. In that sense, the paper does not treat
+the earlier historical and corpus studies as proof of the implementation
+claim. It treats them as the conceptual and representational prerequisites
+for a concrete test of distributed embodiment. The proof burden remains
+execution: node allocation, load structure, cadence separation, behavioral
+handoff, simulation evidence, and eventual hardware evidence must be shown
+rather than inferred from the earlier analyses.
 
 \section{From Behavioral Vocabulary to Implementation Grammar}
 
