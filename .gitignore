@@ -115,6 +115,14 @@ acs-*.bib
 *.eledsec[1-9][0-9][0-9]
 *.eledsec[1-9][0-9][0-9]R
 
+## Tracked paper outputs:
+!arxiv/
+!arxiv/v.1/
+!arxiv/v.1/README.md
+!arxiv/v.1/main.tex
+!arxiv/v.1/references.bib
+!arxiv/v.1/main.pdf
+
 # glossaries
 *.acn
 *.acr

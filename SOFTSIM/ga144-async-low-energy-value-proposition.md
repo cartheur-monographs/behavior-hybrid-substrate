@@ -13,8 +13,8 @@ Sources:
 - `DB013 Chapter 4`
 - `DB013 Chapter 6`
 - `DB013 Chapter 7`
-- `docs/sim/SOFTSIM/softsim-ga144-experiment-matrix.md`
-- `arxiv/v.2/notes/literature-correlation-and-claim-support-2026-07-15.md`
+- `SOFTSIM/softsim-ga144-experiment-matrix.md`
+- local prior-paper and source notes in `../literature/` and `../SOFTSIM/`
 
 Observed facts:
 

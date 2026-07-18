@@ -11,9 +11,9 @@ Question:
 Sources:
 
 - `arxiv/v.1/main.tex`
-- `docs/sim/SOFTSIM/softsim-ga144-experiment-matrix.md`
-- `docs/sim/SOFTSIM/softsim-1737-recovered-template.md`
-- `docs/sim/SOFTSIM/softsim-cadence-demo-v4.md`
+- `SOFTSIM/softsim-ga144-experiment-matrix.md`
+- `SOFTSIM/softsim-1737-recovered-template.md`
+- `SOFTSIM/softsim-cadence-demo-v4.md`
 - Volatco official site: `https://volatco.tech/`
 - Volatco technical docs: `https://volatco.github.io/`
 
@@ -212,7 +212,7 @@ The recommended two diagram targets are:
 
 ## Next concrete actions
 
-1. write a paper-safe `Move` experiment paragraph for `arxiv/v.2/paper/main.tex`
+1. write a paper-safe `Move` experiment paragraph for `arxiv/v.1/main.tex`
 2. create a `Move`-specific `1737`-style pseudo-source draft
 3. extract or sketch the second `Recovery Slice` figure for the paper
 4. add a short board-deployment note that maps `SOFTSIM` success criteria to

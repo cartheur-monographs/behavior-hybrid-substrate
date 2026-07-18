@@ -8,18 +8,18 @@ Question:
 
 Sources:
 
-- `docs/sim/README.md`
-- `arxiv/v.2/notes/DB013-ch4-6-7-arxiv-notes.md`
+- `../README.md`
+- `SOFTSIM/DB013-ch4-6-7-arxiv-notes.md`
 - `DB013 Chapter 7`, especially:
   - block `1698` as a full supported initialization example,
   - block `1737` as a simple assembled-program example,
   - `SOFTSIM` operator vocabulary and BDL-driven loading model.
-- `BEHAVIORS.md`
+- prior behavior-vocabulary work collected under `../literature/`
 
 Observed repo facts:
 
 - The repo does not currently expose an obvious local `SOFTSIM` source block or tiny example ready to run.
-- `docs/sim/README.md` explicitly points to `1698 LOAD`.
+- `../README.md` explicitly points to `1698 LOAD`.
 - The extracted `DB013` text says:
   - block `1698` loads `SOFTSIM` plus a larger chip configuration,
   - block `1737` is the simpler example that assembles a small program, loads it into node `000`, and sets up the view.

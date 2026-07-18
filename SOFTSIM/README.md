@@ -9,11 +9,17 @@ Purpose:
 - keep `arxiv/` reserved for paper output and paper-ready staging,
 - separate implementation exploration from publication wording.
 
+Primary source locations:
+
+- `../manuals/DB001.pdf`: GreenArrays F18A technology reference.
+- `../manuals/DB013.pdf`: GreenArrays arrayForth user's manual.
+- `../literature/`: local PDF copies of the earlier papers in the series.
+
 Suggested use:
 
 - keep DB-derived notes, architecture comparisons, and demo plans here,
 - treat this folder as the source-side research workspace,
-- only promote distilled, paper-safe text into `arxiv/v.2/paper/` when ready.
+- only promote distilled, paper-safe text into `../arxiv/v.1/` when ready.
 
 Current contents include:
 

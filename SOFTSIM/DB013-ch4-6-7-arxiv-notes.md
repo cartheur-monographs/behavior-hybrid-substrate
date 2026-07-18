@@ -1,8 +1,8 @@
 # DB013 Chapters 4, 6, and 7 Notes for arXiv Paper
 
 Source documents:
-- `docs/sim/DB013.pdf` - `arrayForth 3 User's Manual`
-- `docs/sim/DB001.pdf` - `F18A Technology Reference`
+- `../manuals/DB013.pdf` - `arrayForth 3 User's Manual`
+- `../manuals/DB001.pdf` - `F18A Technology Reference`
 
 This note captures the material from DB013 Chapters 4, 6, and 7, with the DB001 material that Chapter 4 explicitly relies on.
 

@@ -8,7 +8,7 @@ Question:
 
 Sources:
 
-- `arxiv/v.2/literature/we all are robots - EP.108.pdf`
+- local robotics and series literature collected under `../literature/`
 - `GR00T N1: An Open Foundation Model for Generalist Humanoid Robots`
 - `Hume: Introducing System-2 Thinking in Visual-Language-Action Model`
 - `AgiBot World Colosseo: A Large-scale Manipulation Platform for Scalable and Intelligent Embodied Systems`
@@ -66,6 +66,6 @@ Possible paper wording:
 
 Follow-up needed:
 
-- Add local copies of the key architectural papers to `arxiv/v.2/literature`.
+- Add local copies of the key architectural papers to `../literature/`.
 - If a reliable primary source for `Holiday Robotics VLS` becomes available, add it to the literature set.
 - Build a minimal `SOFTSIM` example that makes the fast/slow cadence concrete.

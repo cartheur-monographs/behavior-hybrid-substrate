@@ -5,7 +5,7 @@ Status: `Action note`
 Purpose:
 
 - explain what you need to do next to address the current blocker
-- connect the earlier note in `docs/sim/working-notes.txt` to the later live
+- connect the earlier note in `../working-notes.txt` to the later live
   `Move` experiment results
 - reduce the problem to a short sequence of practical investigations
 
@@ -31,7 +31,7 @@ The evidence now points to a block-context difference rather than a general
 
 ## What the earlier working note already told us
 
-The earlier note in `docs/sim/working-notes.txt` identified exactly the right
+The earlier note in `../working-notes.txt` identified exactly the right
 next investigation:
 
 1. determine whether `1737 LOAD` succeeds because it is executed as a stored

@@ -12,7 +12,7 @@ Sources:
 - `DB013 Chapter 4`: per-node assembly and object-bin workflow
 - `DB013 Chapter 6`: BDL and boot-stream initialization
 - `DB013 Chapter 7`: SOFTSIM as high-level functional execution environment
-- `arxiv/v.2/literature/we all are robots - EP.108.pdf`
+- local robotics and series literature collected under `../literature/`
 - Business Insider, January 16, 2026:
   `https://www.businessinsider.com/1x-humanoid-robot-training-humans-world-models-optimus-rival-2026-1`
 - Business Insider, July 13, 2026:

@@ -133,7 +133,7 @@ verify at least one item in each category:
 
 ## Relationship to the paper
 
-This note belongs in `docs/sim/SOFTSIM` because it is implementation-facing.
+This note belongs in `SOFTSIM/` because it is implementation-facing.
 For the paper in `arxiv/`, the safer distilled message is:
 
 - prior robotics literature already motivates fast/slow architectures,
