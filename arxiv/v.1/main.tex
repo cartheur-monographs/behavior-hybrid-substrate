@@ -6,8 +6,10 @@
 \usepackage{lmodern}
 \usepackage{setspace}
 \usepackage{hyperref}
+\usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{csquotes}
+\usepackage{array}
 \usepackage[numbers,sort&compress]{natbib}
 
 \title{From Behavioral State Vocabularies to Distributed Embodiment:\\
@@ -84,6 +86,10 @@ contemporary robotics in general. It is narrower and more practical. The
 claim is that the \texttt{F18A} / \texttt{arrayForth} /
 \texttt{SOFTSIM} / \texttt{GA144} stack offers a usable experimental path
 for implementing distributed embodied control in explicit small processes.
+The power of this move is that behavioral descriptions become testable
+engineering objects: not merely names for robot actions, but allocation,
+loading, communication, and inspection obligations on a distributed
+substrate.
 That makes it a good setting in which to test whether behavioral
 decompositions derived from robot code can be turned into node-local loops,
 inter-node handoffs, and slower supervisory interventions without being
@@ -142,6 +148,120 @@ binary \citep{greenarrays2011db013}. What the earlier paper recovered at
 the level of behavioral analysis thus meets a substrate that is already
 organized for decomposition.
 
+If the claim is embodiment rather than simulation alone, however, the
+substrate must be specified in enough detail to constrain the proposed
+mapping. The physical chip therefore becomes part of the argument, not only
+its eventual destination.
+
+\section{The GA144A12 Physical Substrate}
+
+The physical target for this work is not a generic many-core processor. It
+is the \texttt{GA144A12}, revision \texttt{A12-PC-2026.03}, a controlled
+production-candidate instance of the \texttt{GA144} isolated-linear
+processor family: a multicomputer array built from \texttt{F18A} computers
+\citep{greenarrays2026ga144a12,cartheur2026pb001}. At the chip level, the
+device contains 144 independent, architecturally identical \texttt{F18A}
+computers arranged as 18 columns by 8 rows. Node coordinates are written as
+Cartesian addresses, with node \texttt{000} at the lower left and nodes
+such as \texttt{017}, \texttt{700}, and \texttt{717} marking other corners
+of the array. This coordinate scheme is important for the paper because
+node allocation is not an abstract partitioning step. It is a placement
+decision on a real communication fabric.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\linewidth]{figures/ga144a12-array-layout.jpg}
+\caption{GA144A12 array layout and pin designation, showing the 18 by 8
+node fabric, communication-port directions, I/O-capable nodes, boot
+specializations, analog nodes, and external pin mapping. Adapted from the
+GA144A12 revision A12 datasheet \citep{greenarrays2026ga144a12}.}
+\label{fig:ga144a12-array-layout}
+\end{figure}
+
+Each \texttt{F18A} is an 18-bit computer with its own local RAM, ROM,
+stacks, registers, and communication ports \citep{greenarrays2011db001}.
+The computers operate independently and asynchronously, communicating
+through point-to-point ports whose transfers suspend until the matching
+neighboring operation occurs. This means that a behavioral design mapped to
+the \texttt{GA144A12} is not compiled into one global instruction stream.
+It becomes a set of small local programs whose coordination is expressed
+through explicit node placement, port direction, and communication
+discipline.
+
+The chip-level datasheet and product brief add the physical configuration
+needed to move from this generic \texttt{F18A} model to an actual board
+target. Of the 144 computers, 22 edge nodes are equipped with one or more
+I/O pins \citep{greenarrays2026ga144a12,cartheur2026pb001}. The resulting
+external interface includes 25 programmable digital I/O pins, five analog
+inputs and five analog outputs, two 18-bit parallel interfaces, and two
+high-speed \texttt{SERDES} nodes. The bottom bus group, for example, uses
+nodes \texttt{007}, \texttt{008}, and \texttt{009} to control the parallel
+interfaces and four GPIO pins commonly used for external memory control.
+Other nodes provide synchronous, asynchronous, \texttt{SPI}, or
+one-wire-oriented boot and ROM specializations. These specializations
+matter because embodiment is not only a question of where code runs. It is
+also a question of where sensors, actuators, boot sources, memory
+interfaces, and board-level communication paths enter the array.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.28\linewidth}
+                >{\raggedright\arraybackslash}p{0.62\linewidth}}
+\toprule
+Architectural feature & Relevance to this paper \\
+\midrule
+144 \texttt{F18A} computers & Provides the physical node population for
+mapping behavior diagrams to many small local programs. \\
+18 by 8 node array & Makes node allocation a concrete placement and routing
+problem rather than a purely logical decomposition. \\
+Asynchronous port communication & Supports local reactive loops and explicit
+handoffs, while requiring communication discipline when moving from
+\texttt{SOFTSIM} to hardware. \\
+Per-node RAM, ROM, stacks, and registers & Lets behavior blocks be hosted as
+node-local routines with local state and compact control loops. \\
+22 I/O-capable edge nodes & Connect the internal behavior fabric to physical
+sensors, actuators, memory devices, and board-level signals through digital,
+analog, serial, and parallel interfaces. \\
+Specialized boot nodes and ROMs & Provide practical entry points for bringing
+node ensembles into known execution states after reset. \\
+25 GPIO pins, 5 analog inputs, 5 analog outputs, two \texttt{SERDES} nodes,
+and two 18-bit parallel interfaces & Show that the chip is not only a compute
+fabric but an embodied I/O substrate. \\
+\bottomrule
+\end{tabular}
+\caption{GA144A12 architectural features relevant to executable embodiment.}
+\label{tab:ga144a12-features}
+\end{table}
+
+The datasheet and product brief also give the physical and electrical
+boundary of this claim. They describe a peak aggregate capability of up to
+96 billion operations per second, distributed memory of 9216 words of RAM
+and 9216 words of ROM across the array, and application-dependent power
+scaling from suspended microwatt operation to hundreds of milliwatts under
+heavier activity \citep{greenarrays2026ga144a12,cartheur2026pb001}. That
+power behavior is not merely a clock-rate parameter: the product brief
+frames energy use as a function of each computer's software- and
+event-controlled duty cycle. The package is a 10 mm by 10 mm, 88-pin
+\texttt{QFN} with 0.4 mm pin pitch and an exposed die-attach paddle used as
+common ground and primary thermal path. Separate core, I/O, and analog
+supply domains are identified, and the stated operating range is
+\(-40\,^\circ\mathrm{C}\) to \(125\,^\circ\mathrm{C}\). These details do
+not prove a robotics result by themselves, but they make the
+physical-manifestation claim more concrete: a behavior architecture carried
+to \texttt{GA144A12} must respect package, power, reset, boot, I/O, thermal,
+and board-design constraints.
+
+For the present paper, the most important conclusion is architectural. The
+\texttt{GA144A12} is a physical fabric of many asynchronous, communicating,
+locally programmed computers with concrete I/O and boot resources. That
+makes it a serious candidate substrate for testing whether behavior
+diagrams can be realized as distributed executable organization. It also
+sets the limits of the claim. \texttt{SOFTSIM} can validate functional
+organization before hardware work, but the real chip remains necessary for
+claims about physical timing, electrical behavior, I/O interaction, power,
+thermal behavior, and board-level reliability.
+
 \section{The GreenArrays Execution Path}
 
 The practical value of the GreenArrays stack lies in the continuity of its
@@ -181,6 +301,103 @@ The important constraint is that the simulator should be treated as a
 functional witness, not as a timing-faithful proxy for the hardware. It can
 validate organization and value-level behavior, while real-chip testing
 remains necessary for timing, contention, and physical I/O questions.
+
+\section{Current Evidence Status}
+
+The present state of the work should be stated explicitly because the
+argument depends on separating established execution facts from pending
+experiments. The local \texttt{arrayForth} / \texttt{SOFTSIM} environment
+has already been reached through the installed project path, and the
+documented simulator vocabulary has been observed after \texttt{SOFTSIM
+LOAD}. Two stock blocks have also been exercised: block \texttt{1698},
+which loads a larger populated simulator state, and block \texttt{1737},
+which provides the smaller baseline now used as the trusted starting point.
+In both cases, stepping with \texttt{SUPER} advanced the simulator rather
+than leaving a static display. This establishes a limited but important
+baseline: the local toolchain is live, the documented examples are present,
+and \texttt{SOFTSIM} can be used as an operator-facing functional execution
+environment.
+
+That baseline does not yet prove the paper's constructive claim. The
+current blocker is more specific. The stored \texttt{1737} block loads and
+steps, but prompt-entered attempts to retype or mutate the same style of
+small assembly body have failed at words such as \texttt{clc} and
+\texttt{unext}. The most plausible working diagnosis is therefore not a
+general simulator failure, but a block-context problem: the stored block
+appears to provide compilation or loading conditions that direct prompt
+entry does not reproduce. The next experiment must preserve that trusted
+block context, duplicate \texttt{1737}, make only one small behavioral
+mutation, and observe whether the duplicated block still loads and steps.
+
+This distinction matters for the paper's evidential discipline. The
+confirmed stock examples support the claim that the environment is usable.
+A successful duplicated-block mutation would support the stronger claim
+that the environment can host custom behavior. A two-node handoff would then
+support the still stronger claim that a reactive/supervisory cadence can be
+instantiated as distributed execution rather than merely described as an
+architecture.
+
+\section{Experiment Plan and Success Criteria}
+
+The experiments should proceed in a deliberately small sequence. Each step
+adds one kind of proof burden while holding the others as steady as
+possible. This is important because a failure in this toolchain can arise
+from several different sources: assembly syntax, block context, node image
+construction, initialization, inter-node communication, simulator
+inspection, or hardware behavior. A useful experiment sequence should avoid
+mixing those failure modes too early.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.22\linewidth}
+                >{\raggedright\arraybackslash}p{0.34\linewidth}
+                >{\raggedright\arraybackslash}p{0.34\linewidth}}
+\toprule
+Experiment & Purpose & Success criterion \\
+\midrule
+\texttt{1737} baseline & Establish the smallest known-good
+\texttt{SOFTSIM} execution path & Block loads, node \texttt{000} is visible,
+and \texttt{SUPER} advances execution \\
+One-node mutation & Show that the toolchain can host custom behavior rather
+than only stock examples & A duplicated block with one changed \texttt{go}
+body loads, steps, and differs visibly from baseline \\
+Two-node cadence & Instantiate the smallest fast/reactive and
+slow/supervisory split & Two nodes load and execute; a supervisory token or
+mode change alters the reactive node's behavior \\
+Marker observability & Show that distributed behavior can be inspected rather
+than merely asserted & selected memory or state markers change in the
+expected relation to mode changes \\
+Diagram mapping & Connect a paper-facing behavior diagram to executable node
+organization & Diagram elements map to node roles, code locations, load
+structure, and observed execution \\
+\texttt{GA144} manifestation & Carry the smallest stable organization toward
+hardware & A \texttt{SOFTSIM}-validated organization is prepared for, or
+demonstrated on, the physical substrate \\
+\bottomrule
+\end{tabular}
+\caption{Incremental experiments needed to turn the framework claim into
+execution evidence.}
+\label{tab:experiment-plan}
+\end{table}
+
+The first two experiments are especially important because they determine
+whether the paper can move from framework to implementation without
+overclaiming. The \texttt{1737} baseline only shows that existing examples
+run. The one-node mutation is the first real test of construction. Until
+that mutation succeeds, the paper should avoid saying that behavior
+diagrams have already been made executable in this environment. It can say
+that the environment provides a promising and partially validated path.
+
+For this paper, a behavioral handoff should also be defined operationally.
+The minimal handoff is not a full robot task. It is a visible transfer of
+control influence between two node-local processes: a fast node continues a
+compact local loop, a slower node produces a token or mode condition, and
+the fast node changes its local behavior in response. If this can be loaded,
+stepped, and inspected in \texttt{SOFTSIM}, then the paper has functional
+evidence for cadence separation. If the same organization can later be
+manifested on \texttt{GA144}, then the paper gains hardware evidence as
+well. The two claims should remain distinct.
 
 \section{Fast and Slow Cadence}
 
