@@ -236,10 +236,15 @@ fabric but an embodied I/O substrate. \\
 
 The datasheet and product brief also give the physical and electrical
 boundary of this claim. They describe a peak aggregate capability of up to
-96 billion operations per second, distributed memory of 9216 words of RAM
-and 9216 words of ROM across the array, and application-dependent power
-scaling from suspended microwatt operation to hundreds of milliwatts under
-heavier activity \citep{greenarrays2026ga144a12,cartheur2026pb001}. That
+96 billion operations per second and a deliberately fine-grained memory
+organization: 9216 18-bit words of RAM and 9216 18-bit words of ROM
+distributed across the array, which means 64 RAM words and 64 ROM words
+local to each node. This makes the implementation burden tangible:
+behavior blocks must be small, local, and communication-aware rather than
+written as ordinary memory-rich routines. The same documents describe
+application-dependent power scaling from suspended microwatt operation to
+hundreds of milliwatts under heavier activity
+\citep{greenarrays2026ga144a12,cartheur2026pb001}. That
 power behavior is not merely a clock-rate parameter: the product brief
 frames energy use as a function of each computer's software- and
 event-controlled duty cycle. The package is a 10 mm by 10 mm, 88-pin
