@@ -4,9 +4,11 @@ A body of research extending word-meaning transferrence via twofold machine inte
 
 ## Documentation relevant to SoftSim
 
-Chapter 4 - Programming the F18
-Chapter 6 - (preparing) boot descriptor-language
-Chapter 7 - SOFTSIM
+_DB013_ with leanings to _DB001_
+
+* Chapter 4 - Programming the F18
+* Chapter 6 - (preparing) boot descriptor-language
+* Chapter 7 - SOFTSIM
 
 _Start here_
 
